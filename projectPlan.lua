@@ -10,13 +10,13 @@ BrainGrid/
 |   |   |   |-- random.cpp
 |   |   |   |-- utilities.h
 |   |   |   |-- utilities.cpp
-|   |   |-- Layers/
 |   |   |   |-- activation.h
 |   |   |   |-- activation.cpp
-|   |   |   |-- convolution.h
-|   |   |   |-- convolution.cpp
+|   |   |-- Layers/
 |   |   |   |-- dense.h
 |   |   |   |-- dense.cpp
+|   |   |   |-- convolution.h
+|   |   |   |-- convolution.cpp
 |   |   |   |-- dropout.h
 |   |   |   |-- dropout.cpp
 |   |   |   |-- normalization.h

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace Layers
+namespace Core
 {
     enum class ActivationType
     {

@@ -1,7 +1,7 @@
 ﻿#include "bgpch.h"
 #include "LinearAlgebra.h"
 
-Core::Matrix Core::Addition(const Matrix& a, const Matrix& b)
+Core::Matrix Core::MatrixAddition(const Matrix& a, const Matrix& b)
 {
     size_t rows = a.size();
     size_t cols = a[0].size();
@@ -21,7 +21,7 @@ Core::Matrix Core::Addition(const Matrix& a, const Matrix& b)
     return result;
 }
 
-Core::Matrix Core::Subtraction(const Matrix& a, const Matrix& b)
+Core::Matrix Core::MatrixSubtraction(const Matrix& a, const Matrix& b)
 {
     size_t rows = a.size();
     size_t cols = a[0].size();
@@ -41,7 +41,7 @@ Core::Matrix Core::Subtraction(const Matrix& a, const Matrix& b)
     return result;
 }
 
-Core::Matrix Core::Multiplication(const Matrix& a, const Matrix& b)
+Core::Matrix Core::MatrixMultiplication(const Matrix& a, const Matrix& b)
 {
     size_t rowsA = a.size();
     size_t colsA = a[0].size();
@@ -66,7 +66,7 @@ Core::Matrix Core::Multiplication(const Matrix& a, const Matrix& b)
     return result;
 }
 
-Core::Matrix Core::ScalarMultiplication(const Matrix& a, double scalar)
+Core::Matrix Core::MatrixScalarMultiplication(const Matrix& a, double scalar)
 {
     size_t rows = a.size();
     size_t cols = a[0].size();
@@ -84,7 +84,7 @@ Core::Matrix Core::ScalarMultiplication(const Matrix& a, double scalar)
     return result;
 }
 
-Core::Matrix Core::Transpose(const Matrix& a)
+Core::Matrix Core::MatrixTransposition(const Matrix& a)
 {
     size_t rows = a.size();
     size_t cols = a[0].size();
@@ -99,4 +99,123 @@ Core::Matrix Core::Transpose(const Matrix& a)
 
     return result;
 }
+
+std::vector<double> Core::VectorAddition(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t size = a.size();
+
+    if (size != b.size()) throw std::invalid_argument("Vectors must be of the same size.");
+
+    std::vector<double> result(size, 0.0);
+
+    for (size_t i = 0; i < size; i++)
+    {
+        result[i] = a[i] + b[i];
+    }
+
+    return result;
+}
+
+std::vector<double> Core::VectorSubtraction(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t size = a.size();
+
+    if (size != b.size()) throw std::invalid_argument("Vectors must be of the same size.");
+
+    std::vector<double> result(size, 0.0);
+
+    for (size_t i = 0; i < size; i++)
+    {
+        result[i] = a[i] - b[i];
+    }
+
+    return result;
+}
+
+std::vector<double> Core::VectorHadamardProduct(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t n = a.size();
+    
+    if (n != b.size()) throw std::invalid_argument("Vectors must have the same size for element-wise multiplication!");
+
+    std::vector<double> result(n);
+
+    for (size_t i = 0; i < n; i++)
+    {
+        result[i] = a[i] * b[i];
+    }
+
+    return result;
+}
+
+
+std::vector<double> Core::MatrixVectorProduct(const Matrix& matrix, const std::vector<double>& vector)
+{
+    size_t rows = matrix.size();
+    size_t cols = matrix[0].size();
+
+    if (vector.size() != cols) throw std::invalid_argument("Matrix and vector dimensions must be compatible for multiplication!");
+
+    std::vector<double> result(rows, 0.0);
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < cols; ++j)
+        {
+            result[i] += matrix[i][j] * vector[j];
+        }
+    }
+
+    return result;
+}
+
+std::vector<double> Core::FlattenedOuterProduct(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t rows = a.size();
+    size_t cols = b.size();
+    std::vector<double> result(rows * cols);
+
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            result[i * cols + j] = a[i] * b[j];
+        }
+    }
+
+    return result;
+}
+
+
+Core::Matrix Core::VectorToMatrix(const std::vector<double>& vector, size_t rows, size_t cols)
+{
+    if (vector.size() != rows * cols) throw std::invalid_argument("The product of rows and cols must be equal to the size of the input vector!");
+
+    Matrix result(rows, std::vector<double>(cols));
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < cols; ++j)
+        {
+            result[i][j] = vector[i * cols + j];
+        }
+    }
+
+    return result;
+}
+
+Core::Matrix Core::OuterProduct(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t rows = a.size();
+    size_t cols = b.size();
+    Matrix result(rows, std::vector<double>(cols));
+
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            result[i][j] = a[i] * b[j];
+        }
+    }
+
+    return result;
+}
+
+
 

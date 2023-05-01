@@ -1,7 +1,7 @@
 ﻿#include "bgpch.h"
 #include "Activation.h"
 
-namespace Layers
+namespace Core
 {
     std::vector<double> Activation::Apply(const std::vector<double>& input, ActivationType type)
     {
