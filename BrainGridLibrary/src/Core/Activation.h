@@ -27,6 +27,5 @@ namespace Core
         static double ReLUDerivative(double x);
 
         static std::vector<double> Softmax(const std::vector<double> &x);
-        static std::vector<double> SoftmaxDerivative(const std::vector<double> &x);
     };
 }

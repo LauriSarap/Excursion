@@ -130,18 +130,4 @@ namespace Core
 
         return result;
     }
-
-    std::vector<double> Activation::SoftmaxDerivative(const std::vector<double> &x)
-    {
-        std::vector<double> softmaxOfX = Softmax(x);
-
-        std::vector<double> result(x.size());
-
-        for (size_t i = 0; i < x.size(); i++)
-        {
-            result[i] = softmaxOfX[i] * (1 - softmaxOfX[i]);
-        }
-
-        return result;
-    }
 }
