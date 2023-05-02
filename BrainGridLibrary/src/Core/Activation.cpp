@@ -67,9 +67,9 @@ namespace Core
                 }
                 break;
 
-            case ActivationType::Softmax:
+            /*case ActivationType::Softmax:
                 result = SoftmaxDerivative(input);
-                break;
+                break;*/
 
             default:
                 throw std::invalid_argument("Invalid activation type");

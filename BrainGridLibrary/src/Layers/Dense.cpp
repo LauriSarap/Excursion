@@ -3,51 +3,39 @@
 
 namespace Layers
 {
-    Dense::Dense(size_t inputSize, size_t outputSize, Core::ActivationType activationFunction) : activationFunction(activationFunction)
+    Dense::Dense(int inputSize, int outputSize, Core::ActivationType activationType) :
+        inputSize(inputSize), outputSize(outputSize), activationType(activationType), biases(outputSize), weights(outputSize, std::vector<double>(inputSize))
     {
-        // Initialize weights and biases
-        weights.resize(inputSize * outputSize);
-        biases.resize(outputSize);
+        
+    }
 
-        // Randomly initialize weights
-        for (size_t i = 0; i < weights.size(); i++)
+    void Dense::InitializeWeights()
+    {
+        for (int i = 0; i < outputSize; i++)
         {
-            weights[i] = Core::Random::NormalDistribution(0.0, 0.01);
-        }
-
-        // Initialize biases to 0
-        for (size_t i = 0; i < biases.size(); i++)
-        {
-            biases[i] = 0.0;
+            for (int j = 0; j < inputSize; j++)
+            {
+                weights[i][j] = Core::Random::NormalDistribution(0, 0.5);
+            }
+            biases[i] = Core::Random::NormalDistribution(0, 0.5);
         }
     }
 
-    std::vector<double> Dense::Forward(const std::vector<double>& inputs)
+    std::vector<double> Dense::Forward(std::vector<double>& input)
     {
-        inputCache = inputs;
-        auto linearOutput = Core::MatrixVectorProduct(Core::VectorToMatrix(weights, biases.size(), inputs.size()), inputs);
-        linearOutput = Core::VectorAddition(linearOutput, biases);
-        outputCache = Core::Activation::Apply(linearOutput, activationFunction);
-        return outputCache;
+        Core::Matrix inputMatrix = Core::Matrix(1, input);
+
+        Core::Matrix dotProduct = Core::MatrixMultiplication(inputMatrix, Core::MatrixTransposition(weights));
+        Core::Matrix resultMatrix = Core::MatrixAddition(dotProduct, Core::Matrix(1, biases));
+
+        std::vector<double> result = resultMatrix[0];
+        return Core::Activation::Apply(result, activationType);
     }
 
-    std::vector<double> Dense::Backward(const std::vector<double>& gradients, double learningRate)
+    std::vector<double> Dense::Backward(const std::vector<double>& input, const std::vector<double>& gradients, double learningRate)
     {
-        std::vector<double> dZ = Core::VectorHadamardProduct(Core::Activation::ApplyDerivative(outputCache, activationFunction), gradients);
-        std::vector<double> dW = Core::FlattenedOuterProduct(dZ, inputCache);
-        std::vector<double> dB = dZ;
-        std::vector<double> dA = Core::MatrixVectorProduct(Core::MatrixTransposition(Core::VectorToMatrix(weights, biases.size(), inputCache.size())), dZ);
-
-        // Update weights and biases
-        for (size_t i = 0; i < weights.size(); i++)
-        {
-            weights[i] -= learningRate * dW[i];
-        }
-
-        for (size_t i = 0; i < biases.size(); i++)
-        {
-            biases[i] -= learningRate * dB[i];
-        }
-        return dA;
+        std::vector<double> inputActivationDerivative = Core::Activation::ApplyDerivative(input, activationType);
+        std::vector<double> newGradients(inputSize, 0);
     }
+
 }
