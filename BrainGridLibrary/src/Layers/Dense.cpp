@@ -32,10 +32,23 @@ namespace Layers
         return Core::Activation::Apply(result, activationType);
     }
 
-    std::vector<double> Dense::Backward(const std::vector<double>& input, const std::vector<double>& gradients, double learningRate)
+    std::vector<double> Dense::Backward(const std::vector<double> &input, const std::vector<double> &gradients, double learningRate)
     {
         std::vector<double> inputActivationDerivative = Core::Activation::ApplyDerivative(input, activationType);
         std::vector<double> newGradients(inputSize, 0);
+
+        for (int i = 0; i < outputSize; i++) {
+            double delta = gradients[i] * inputActivationDerivative[i];
+
+            for (int j = 0; j < inputSize; j++) {
+                newGradients[j] += delta * weights[i][j];
+                weights[i][j] -= learningRate * delta * input[j];
+            }
+
+            biases[i] -= learningRate * delta;
+        }
+
+        return newGradients;
     }
 
 }
