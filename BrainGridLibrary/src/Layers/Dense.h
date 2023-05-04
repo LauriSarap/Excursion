@@ -16,10 +16,10 @@ namespace Layers
 
         int inputSize;
         int outputSize;
+        Core::ActivationType activationType;
         std::vector<double> biases;
         Core::Matrix weights;
 
     private:
-        Core::ActivationType activationType;
     };
 }

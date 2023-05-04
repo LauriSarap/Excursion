@@ -217,14 +217,16 @@ Core::Matrix Core::OuterProduct(const std::vector<double>& a, const std::vector<
     return result;
 }
 
-double Core::MeanSquaredError(std::vector<double> &predictions, std::vector<double> &targets)
+double Core::MeanSquaredError(const std::vector<double> &predictions, const std::vector<double> &targets)
 {
-    double loss = 0;
+    if (predictions.size() != targets.size()) throw std::invalid_argument("Vectors must be of the same size.");
+    
+    double mse = 0.0;
     for (size_t i = 0; i < predictions.size(); i++) {
         double error = targets[i] - predictions[i];
-        loss += error * error;
+        mse += pow(error, 2);
     }
-    return loss / predictions.size();
+    return mse / predictions.size();
 }
 
 
