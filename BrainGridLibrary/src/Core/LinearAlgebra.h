@@ -24,5 +24,7 @@ namespace Core
     // Return matrices
     Matrix VectorToMatrix(const std::vector<double> &vector, size_t rows, size_t cols);
     Matrix OuterProduct(const std::vector<double> &a, const std::vector<double> &b);
+
+    double MeanSquaredError(std::vector<double> &predictions, std::vector<double> &targets);
     
 }

@@ -3,36 +3,52 @@
 
 int main()
 {
-    Layers::Dense inputLayer(2, 1, Core::ActivationType::Sigmoid);
-    inputLayer.InitializeWeights();
+    std::vector<std::vector<double>> inputs = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };
+    std::vector<double> outputs = {0, 1, 1, 0};
 
-    std::cout << "Layer weights:" << std::endl;
-    
-    for (int i = 0; i < inputLayer.outputSize; i++)
+    Layers::Dense layer1(2, 2, Core::ActivationType::Sigmoid);
+    Layers::Dense layer2(2, 1, Core::ActivationType::Sigmoid);
+
+    layer1.InitializeWeights();
+    layer2.InitializeWeights();
+
+    int epochs = 10000;
+    double learningRate = 0.1;
+
+    for (int epoch = 0; epoch < epochs; epoch++)
     {
-        std::cout << "Weights of output node " << i + 1 << " ";
-        
-        for (int j = 0; j < inputLayer.inputSize; j++)
+        double totalLoss = 0;
+
+        for (int i = 0; i < inputs.size(); i++)
         {
-            std::cout << inputLayer.weights[i][j] << " ";
+            // Forward pass
+            std::vector<double> layer1Output = layer1.Forward(inputs[i]);
+            std::vector<double> layer2Output = layer2.Forward(layer1Output);
+
+            std::vector<double> outputVectorForMSE = {outputs[i]};
+            
+            totalLoss += Core::MeanSquaredError(layer2Output, outputVectorForMSE);
+
+            // Backward pass
+            std::vector<double> layer2Gradients = {layer2Output[0] - outputs[i]};
+            std::vector<double> layer1Gradients = layer2.Backward(layer1Output, layer2Gradients, learningRate);
+            layer1.Backward(inputs[i], layer1Gradients, learningRate);
         }
-        std::cout << std::endl;
+
+        // Display the loss every 500 epochs
+        if (epoch % 10 == 0) {
+            std::cout << "Epoch: " << epoch << ", Loss: " << totalLoss / inputs.size() << std::endl;
+        }
     }
 
-    for (int i = 0; i < inputLayer.outputSize; i++)
-    {
-        std::cout << "Bias of output node " << i + 1 << ": " << inputLayer.biases[i] << std::endl;
+    // Test the trained model
+    for (auto &input : inputs) {
+        std::vector<double> layer1Output = layer1.Forward(input);
+        std::vector<double> layer2Output = layer2.Forward(layer1Output);
+
+        std::cout << "Input: (" << input[0] << ", " << input[1] << "), Output: " << layer2Output[0] << std::endl;
     }
 
-    std::cout << "Forwarding through the network:" << std::endl;
-    std::vector<double> exampleInput = { 1, 1 };
-    
-    std::vector<double> output = inputLayer.Forward(exampleInput);
-
-    for (int i = 0; i < output.size(); i++)
-    {
-        std::cout << "Output of node " << i + 1 << ": " << output[i] << std::endl;
-    }
     
     // Wait for user input
     std::cout << "Press enter to exit..." << std::endl;

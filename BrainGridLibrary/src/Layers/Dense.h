@@ -12,7 +12,7 @@ namespace Layers
         void InitializeWeights();
 
         std::vector<double> Forward(std::vector<double> &input);
-        std::vector<double> Backward(const std::vector<double> &input, const std::vector<double> &gradients, double learningRate);
+        std::vector<double> Backward(std::vector<double> &input, const std::vector<double> &gradients, double learningRate);
 
         int inputSize;
         int outputSize;

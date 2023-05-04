@@ -217,5 +217,15 @@ Core::Matrix Core::OuterProduct(const std::vector<double>& a, const std::vector<
     return result;
 }
 
+double Core::MeanSquaredError(std::vector<double> &predictions, std::vector<double> &targets)
+{
+    double loss = 0;
+    for (size_t i = 0; i < predictions.size(); i++) {
+        double error = targets[i] - predictions[i];
+        loss += error * error;
+    }
+    return loss / predictions.size();
+}
+
 
 
