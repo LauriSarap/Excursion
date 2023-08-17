@@ -1,6 +1,6 @@
-workspace "BrainGrid"
+workspace "Excursion"
 	architecture "x64"
-	startproject "DigitDetection"
+	startproject "XORProblem"
 
 	configurations
 	{
@@ -14,8 +14,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 
-project "BrainGridLibrary"
-	location "BrainGridLibrary"
+project "ExcursionLibrary"
+	location "ExcursionLibrary"
 	kind "StaticLib"
 	language "C++"
 	staticruntime "off"
@@ -24,7 +24,7 @@ project "BrainGridLibrary"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "bgpch.h"
-	pchsource "BrainGridLibrary/src/bgpch.cpp"
+	pchsource "ExcursionLibrary/src/bgpch.cpp"
 
 	files
 	{
@@ -43,32 +43,32 @@ project "BrainGridLibrary"
 
 		defines
 		{
-			"BG_PLATFORM_WINDOWS",
-			"BG_BUILD_DLL"
+			"EX_PLATFORM_WINDOWS",
+			"EX_BUILD_DLL"
 		}
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/DigitDetection/\"")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/XORProblem/\"")
 		}
 
 	filter "configurations:Debug"
-		defines "BG_DEBUG"
+		defines "EX_DEBUG"
 		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "BG_RELEASE"
+		defines "EX_RELEASE"
 		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Distribution"
-		defines "BG_DISTRIBUTION"
+		defines "EX_DISTRIBUTION"
 		runtime "Release"
 		optimize "On"
 
-project "DigitDetection"
-	location "DigitDetection"
+project "XORProblem"
+	location "XORProblem"
 	kind "ConsoleApp"
 	language "C++"
 	staticruntime "off"
@@ -84,12 +84,12 @@ project "DigitDetection"
 
 	includedirs
 	{
-        "BrainGridLibrary/src"
+        "ExcursionLibrary/src"
 	}
 
 	links
 	{
-		"BrainGridLibrary"
+		"ExcursionLibrary"
 	}
 
 	filter "system:windows"
@@ -98,20 +98,20 @@ project "DigitDetection"
 
 		defines
 		{
-			"BG_PLATFORM_WINDOWS"
+			"EX_PLATFORM_WINDOWS"
 		}
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "EX_DEBUG"
 		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
+		defines "EX_RELEASE"
 		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Distribution"
-		defines "HZ_DISTRIBUTION"
+		defines "EX_DISTRIBUTION"
 		runtime "Release"
 		optimize "On"
