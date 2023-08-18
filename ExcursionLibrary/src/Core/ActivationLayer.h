@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Layer.h"
 
-class ActivationLayer : Layer
+class ActivationLayer : public Layer
 {
 public:
     ActivationLayer(

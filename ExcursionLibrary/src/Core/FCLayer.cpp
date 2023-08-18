@@ -4,7 +4,7 @@
 FCLayer::FCLayer(int input_size, int output_size)
 {
     //TODO - Initialize weights and biases through other script
-    weights = Eigen::MatrixXd::Random(input_size, output_size) * 0,5;
+    weights = Eigen::MatrixXd::Random(input_size, output_size) * 0.5;
     biases = Eigen::MatrixXd::Random(1, output_size) * 0.5;
 }
 

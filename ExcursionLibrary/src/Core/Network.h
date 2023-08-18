@@ -1,7 +1,23 @@
 ﻿#pragma once
+#include "Layer.h"
 
 class Network
 {
 public:
+    Network();
+
+    void add(Layer* layer);
+
+    void use(std::function<double(const Eigen::MatrixXd&, const Eigen::MatrixXd&)> loss,
+             std::function<Eigen::MatrixXd(const Eigen::MatrixXd&, const Eigen::MatrixXd&)> loss_derivative);
+
+    std::vector<Eigen::MatrixXd> predict_outputs(const std::vector<Eigen::MatrixXd>& input_data);
+
+    void train(const std::vector<Eigen::MatrixXd>& x_train, const std::vector<Eigen::MatrixXd>& y_train, int epochs, double learning_rate);
+
+    std::vector<Layer*> layers;
+private:
+    std::function<double(const Eigen::MatrixXd&, const Eigen::MatrixXd&)> loss;
+    std::function<Eigen::MatrixXd(const Eigen::MatrixXd&, const Eigen::MatrixXd&)> loss_derivative;
     
 };
