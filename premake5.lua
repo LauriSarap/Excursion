@@ -1,6 +1,6 @@
 workspace "Excursion"
 	architecture "x64"
-	startproject "XORProblem"
+	startproject "MNIST"
 
 	configurations
 	{
@@ -69,7 +69,7 @@ project "ExcursionLibrary"
 		optimize "On"
 
 project "XORProblem"
-	location "XORProblem"
+	location "Examples/%{prj.name}"
 	kind "ConsoleApp"
 	language "C++"
 	staticruntime "off"
@@ -79,8 +79,58 @@ project "XORProblem"
 
 	files
 	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"Examples/%{prj.name}/**.h",
+		"Examples/%{prj.name}/**.cpp"
+	}
+
+	includedirs
+	{
+        "ExcursionLibrary/src",
+        "libs/eigen/Eigen"
+	}
+
+	links
+	{
+		"ExcursionLibrary"
+	}
+
+	filter "system:windows"
+		cppdialect "C++17"
+		systemversion "latest"
+
+		defines
+		{
+			"EX_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "EX_DEBUG"
+		runtime "Debug"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "EX_RELEASE"
+		runtime "Release"
+		optimize "On"
+
+	filter "configurations:Distribution"
+		defines "EX_DISTRIBUTION"
+		runtime "Release"
+		optimize "On"
+
+project "MNIST"
+	location "Examples/%{prj.name}"
+	kind "ConsoleApp"
+	language "C++"
+	staticruntime "off"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"Examples/%{prj.name}/**.h",
+		"Examples/%{prj.name}/**.cpp"
 	}
 
 	includedirs
