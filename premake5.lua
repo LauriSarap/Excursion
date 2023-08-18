@@ -34,7 +34,8 @@ project "ExcursionLibrary"
 
 	includedirs
 	{
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"libs/eigen/Eigen"
 	}
 
 	filter "system:windows"
@@ -84,7 +85,8 @@ project "XORProblem"
 
 	includedirs
 	{
-        "ExcursionLibrary/src"
+        "ExcursionLibrary/src",
+        "libs/eigen/Eigen"
 	}
 
 	links
