@@ -24,13 +24,13 @@ int main()
     std::vector<Eigen::MatrixXd> x_train;
     for (int i = 0; i < training_samples; ++i) // TODO Check how this is done faster. Potentially using Eigen::Map
     {
-        Eigen::VectorXd image_vector(28*28);
+        Eigen::MatrixXd image_vector(1, 28*28);
         for (int row = 0; row < 28; ++row)
         {
             for (int col = 0; col < 28; ++col)
             {
                 // Normalize the pixel values to be of type double and be between 0 and 1.
-                image_vector(row * 28 + col) = static_cast<double>(mnist_data.training_images[i](row, col)) / 255.0;
+                image_vector(0, row * 28 + col) = static_cast<double>(mnist_data.training_images[i](row, col)) / 255.0;
             }
         }
 
@@ -45,8 +45,8 @@ int main()
     std::vector<Eigen::MatrixXd> y_train;
     for (int i = 0; i < training_samples; ++i)
     {
-        Eigen::VectorXd label_vector = Eigen::VectorXd::Zero(10);
-        label_vector(mnist_data.training_labels[i]) = 1.0;
+        Eigen::MatrixXd label_vector = Eigen::MatrixXd::Zero(1, 10);
+        label_vector(0, mnist_data.training_labels[i]) = 1.0;
         y_train.push_back(label_vector);
     }
 
