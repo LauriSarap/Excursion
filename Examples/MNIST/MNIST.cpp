@@ -10,9 +10,9 @@ int main()
 {
     // Settings
     int training_samples = 1000; // Max 60k
-    int test_samples = 1000; // Max 10k
+    int test_samples = 10; // Max 10k
     int epochs = 35;
-    double learning_rate = 0.1;
+    double learning_rate = 0.09;
     
    // Data loadings 
     std::string path = "../../Examples/MNIST";
@@ -50,27 +50,32 @@ int main()
         y_train.push_back(label_vector);
     }
 
-    /*std::cout << "Preprocessing MNIST test images.." << std::endl;
-    Eigen::MatrixXd x_test(test_samples, 28*28);
-    for (int i = 0; i < test_samples; ++i)
+    std::cout << "Preprocessing MNIST test images.." << std::endl;
+    std::vector<Eigen::MatrixXd> x_test;
+    for (int i = 0; i < test_samples; ++i) 
     {
-        Eigen::VectorXd image_vector(28*28);
+        Eigen::MatrixXd image_vector(1, 28*28);
         for (int row = 0; row < 28; ++row)
         {
             for (int col = 0; col < 28; ++col)
             {
-                image_vector(row * 28 + col) = static_cast<double>(mnist_data.test_images[i](row, col)) / 255.0;
+                // Normalize the pixel values to be of type double and be between 0 and 1.
+                image_vector(0, row * 28 + col) = static_cast<double>(mnist_data.test_images[i](row, col)) / 255.0;
             }
         }
-        x_test.row(i) = image_vector;
+
+        // Assign the image vector to the i-th row of the matrix (60k rows as 60k images)
+        x_test.push_back(image_vector);
     }
 
     std::cout << "Preprocessing MNIST test labels.." << std::endl;
-    Eigen::MatrixXf y_test = Eigen::MatrixXf::Zero(test_samples, 10);
+    std::vector<Eigen::MatrixXd> y_test;
     for (int i = 0; i < test_samples; ++i)
     {
-        y_test(i, mnist_data.test_labels[i]) = 1.0f;
-    }*/
+        Eigen::MatrixXd label_vector = Eigen::MatrixXd::Zero(1, 10);
+        label_vector(0, mnist_data.test_labels[i]) = 1.0;
+        y_test.push_back(label_vector);
+    }
 
     // Network architecture
     Network net;
@@ -85,8 +90,23 @@ int main()
     net.use(mse, mse_derivative);
     net.train(x_train, y_train, epochs, learning_rate);
 
+    // Testing
+    auto out = net.predict_outputs(x_test);
+    std::cout << "Predicted outputs: " << std::endl;
+    for (int i = 0; i < out.size(); ++i)
+    {
+        std::cout << out[i] << std::endl;
+    }
+    std::cout << "True values: " << std::endl;
+    for (int i = 0; i < y_test.size(); ++i)
+    {
+        std::cout << y_test[i] << std::endl;
+    }
+
+    std::cout << "Accuracy: " << std::endl;
 
     std::cout << "Press enter to exit..." << std::endl;
+    std::cin.get();
     std::cin.get();
 
     return 0;
