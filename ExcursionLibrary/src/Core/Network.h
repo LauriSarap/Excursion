@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Layer.h"
+#include "Data/ParameterSaver.h"
 
 class Network
 {
@@ -14,6 +15,10 @@ public:
     std::vector<Eigen::MatrixXd> predict_outputs(const std::vector<Eigen::MatrixXd>& input_data);
 
     void train(const std::vector<Eigen::MatrixXd>& x_train, const std::vector<Eigen::MatrixXd>& y_train, int epochs, double learning_rate);
+
+    void save(const std::string& filename, const std::string& path, const Data::FileType& fileType);
+
+    void load(const std::string& filename, const std::string& path, const Data::FileType& fileType);
 
     std::vector<Layer*> layers;
 private:

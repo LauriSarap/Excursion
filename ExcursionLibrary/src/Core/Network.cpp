@@ -61,5 +61,16 @@ void Network::train(const std::vector<Eigen::MatrixXd>& x_train, const std::vect
     }
 }
 
+void Network::save(const std::string& filename, const std::string& path, const Data::FileType& fileType)
+{
+    SaveWeightsAndBiases(layers, filename, path, fileType);
+}
+
+void Network::load(const std::string& filename, const std::string& path, const Data::FileType& fileType)
+{
+    LoadWeightsAndBiases(layers, filename, path, fileType);
+}
+
+
 
 

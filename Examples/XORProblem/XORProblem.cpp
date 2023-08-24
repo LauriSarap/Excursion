@@ -37,15 +37,18 @@ int main()
     
     // Training
     net.use(mse, mse_derivative);
-    net.train(x_train, y_train, epochs, learning_rate);
+    //net.train(x_train, y_train, epochs, learning_rate);
 
+    //net.load("parameters", "", Data::FileType::txt);
+    
     // Testing
     auto out = net.predict_outputs(x_train);
     for (const auto& prediction : out)
     {
         std::cout << prediction << std::endl;
     }
-    
+
+    net.save("parameters", "", Data::FileType::txt);
     
     std::cout << "Press enter to exit..." << std::endl;
     std::cin.get();
