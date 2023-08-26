@@ -10,20 +10,13 @@ namespace Data
         json
     };
     
-    void SaveWeightsAndBiases(
-            const std::vector<Layer*>& layers,
-            const std::string& filename,
-            const std::string& path,
-            const FileType& fileType
-            );
-
-    void SaveAsTxt(
-            const std::vector<Layer*>& layers,
-            const std::string& filename,
-            const std::string& path
-            );
+    void SaveWeightsAndBiases(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path, const FileType& fileType);
+    void SaveAsTxt(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
+    void SaveAsJson(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
+    void SaveAsHdf5(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
 
     void LoadWeightsAndBiases(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path, const FileType& fileType);
-
     void LoadFromTxt(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
+    void LoadFromJson(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
+    void LoadFromHdf5(const std::vector<Layer*>& layers, const std::string& filename, const std::string& path);
 }
