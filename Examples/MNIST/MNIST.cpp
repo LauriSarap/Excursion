@@ -11,7 +11,7 @@ int main()
     // Settings
     int training_samples = 1000; // Max 60k
     int test_samples = 10; // Max 10k
-    int epochs = 35;
+    int epochs = 15;
     double learning_rate = 0.09;
     
    // Data loadings 
@@ -86,6 +86,8 @@ int main()
     net.add(new FCLayer(50, 10));
     net.add(new ActivationLayer(tanh_function, tanh_derivative));
 
+    net.load("parameters", "", Data::FileType::json);
+    
     // Training
     net.use(mse, mse_derivative);
     net.train(x_train, y_train, epochs, learning_rate);
@@ -105,6 +107,8 @@ int main()
 
     std::cout << "Accuracy: " << std::endl;
 
+    net.save("parameters", "", Data::FileType::json);
+    
     std::cout << "Press enter to exit..." << std::endl;
     std::cin.get();
     std::cin.get();
