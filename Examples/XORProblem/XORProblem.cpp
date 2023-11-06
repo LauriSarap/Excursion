@@ -32,7 +32,7 @@ int main()
     net.add(new FCLayer(3, 1));
     net.add(new ActivationLayer(tanh_function, tanh_derivative));
 
-    std::cout << net.layers[0]->weights << std::endl;
+    //std::cout << net.layers[0]->weights << std::endl;
 
     
     // Training
